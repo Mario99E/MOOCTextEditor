@@ -45,20 +45,45 @@ public class DocumentBenchmarking {
 			
 			/* Each time through this loop you should:
 			 * 1. Print out numToCheck followed by a tab (\t) (NOT a newline)
+			 */
+			System.out.print(numToCheck +"\t");
+			/*
 			 * 2. Read numToCheck characters from the file into a String
 			 *     Hint: use the helper method below.
-			 * 3. Time a loop that runs trials times (trials is the variable above) that:
+			 */
+			String testString=getStringFromFile(textfile,numToCheck);
+			 /* 3. Time a loop that runs trials times (trials is the variable above) that:
 			 *     a. Creates a BasicDocument 
 			 *     b. Calls fleshScore on this document
-			 * 4. Print out the time it took to complete the loop in step 3 
+			 */
+			long startTime=System.nanoTime()/(10^9);
+			for(int i=0; i<trials ;i++)
+			{
+				BasicDocument mydoc= new BasicDocument(testString);
+				mydoc.getFleschScore();
+			}
+			long endTime=System.nanoTime()/(10^9);
+			long duration=endTime-startTime;
+			 /* 4. Print out the time it took to complete the loop in step 3 
 			 *      (on the same line as the first print statement) followed by a tab (\t)
-			 * 5. Time a loop that runs trials times (trials is the variable above) that:
+			 */
+			System.out.print(duration +"\t");
+			 /* 5. Time a loop that runs trials times (trials is the variable above) that:
 			 *     a. Creates an EfficientDocument 
 			 *     b. Calls fleshScore on this document
-			 * 6. Print out the time it took to complete the loop in step 5 
+			 */
+			 startTime=System.nanoTime()/(10^9);
+			for(int i=0; i<trials ;i++)
+			{
+				EfficientDocument mydoc= new EfficientDocument(testString);
+				mydoc.getFleschScore();
+			}
+			 endTime=System.nanoTime()/(10^9);
+			 duration=endTime-startTime;
+			 /* 6. Print out the time it took to complete the loop in step 5 
 			 *      (on the same line as the first print statement) followed by a newline (\n) 
 			 */  
-			 
+			 System.out.print(duration +"\n");
 		}
 	
 	}
