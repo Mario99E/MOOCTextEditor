@@ -16,7 +16,7 @@ import org.junit.Test;
  */
 public class MyLinkedListTester {
 
-	private static final int LONG_LIST_LENGTH =10; 
+	private static final int LONG_LIST_LENGTH =1000; 
 
 	MyLinkedList<String> shortList;
 	MyLinkedList<Integer> emptyList;
@@ -32,6 +32,7 @@ public class MyLinkedListTester {
 	    shortList = new MyLinkedList<String>();
 		shortList.add("A");
 		shortList.add("B");
+		shortList.add("C");
 		emptyList = new MyLinkedList<Integer>();
 		longerList = new MyLinkedList<Integer>();
 		for (int i = 0; i < LONG_LIST_LENGTH; i++)
@@ -64,7 +65,9 @@ public class MyLinkedListTester {
 		
 		// test short list, first contents, then out of bounds
 		assertEquals("Check first", "A", shortList.get(0));
-		assertEquals("Check second", "B", shortList.get(1));
+		assertEquals("Check middle", "B", shortList.get(1));
+		assertEquals("Check Last", "C", shortList.get(2));
+		
 		
 		try {
 			shortList.get(-1);
@@ -74,7 +77,7 @@ public class MyLinkedListTester {
 		
 		}
 		try {
-			shortList.get(2);
+			shortList.get(3);
 			fail("Check out of bounds");
 		}
 		catch (IndexOutOfBoundsException e) {
@@ -102,7 +105,6 @@ public class MyLinkedListTester {
 		
 	}
 	
-	
 	/** Test removing an element from the list.
 	 * We've included the example from the concept challenge.
 	 * You will want to add more tests.  */
@@ -125,6 +127,7 @@ public class MyLinkedListTester {
 	{
         // TODO: implement this test
 		
+		
 	}
 
 	
@@ -133,6 +136,10 @@ public class MyLinkedListTester {
 	public void testSize()
 	{
 		// TODO: implement this test
+		assertEquals("Size: check size of short list ", 3, shortList.size());
+		assertEquals("Size: check size of long list ", LONG_LIST_LENGTH, longerList.size());
+		assertEquals("Size: check size of empty list ", 0, emptyList.size());
+		
 	}
 
 	
@@ -144,7 +151,46 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddAtIndex()
 	{
-        // TODO: implement this test
+        //add index out of bounds
+		try
+		{
+			emptyList.add(5,33);
+			fail("check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+			
+		}
+		//add null
+		try
+		{
+			shortList.add(1,null);
+			fail("check out of bounds");
+		}
+		catch (NullPointerException e) {
+			
+		}
+		
+		//add to empty list
+		emptyList.add(0,75);
+		assertEquals("Check add to empty", (Integer)75, emptyList.get(0));
+		//add to short List 
+		
+		shortList.add(1,"X");
+		assertEquals("Check add to shortlist", "X", shortList.get(1));
+		//add to size
+		shortList.add(4,"L");
+		assertEquals("Check add to end", "L", shortList.get(4));
+		
+		//add in miidel
+		int n=LONG_LIST_LENGTH/2;
+		longerList.add(n,565);
+		assertEquals("Check add to middle in long List", (Integer)565, longerList.get(n));
+		assertEquals("Check size", LONG_LIST_LENGTH+1 , longerList.size());
+		
+		
+		
+		
+		
 		
 	}
 	
@@ -152,7 +198,30 @@ public class MyLinkedListTester {
 	@Test
 	public void testSet()
 	{
-	    // TODO: implement this test
+	    //set out of bounds 
+		try
+		{
+			emptyList.set(5,33);
+			fail("check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+			
+		}
+		//set null
+		try
+		{
+			shortList.set(1,null);
+			fail("check out of bounds");
+		}
+		catch (NullPointerException e) {
+			
+		}
+		//
+		String sReturned=shortList.set(0, "Z");
+		assertEquals("Check size", 3 , shortList.size());
+		assertEquals("Check set data", "Z" , shortList.get(0));
+		assertEquals("Check return data", "A" , sReturned);
+		
 	    
 	}
 	
