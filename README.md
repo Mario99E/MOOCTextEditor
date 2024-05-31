@@ -34,6 +34,10 @@ Week 2 : Efficiency Analysis and Benchmarking
 =============================================
 document.EfficientDocument.java
 
+here is a chart between EffinientDocument and BasicDocument both are *O(n)*
+ 
+ ![performance cahrt](img/Chart%20between%20BasicDocument%20and%20EfficentDocument.jpg)
+
 Week 3 : Interfaces, Linked Lists vs. Arrays, and Correctness
 =============================================================
 textgen.MyLinkedList*.java
