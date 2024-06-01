@@ -33,7 +33,7 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	public void train(String sourceText)
 	{
 //		set "starter" to be the first word in the text  
-		starter=sourceText.split(" ")[0];
+		starter=sourceText.split("\\s+")[0];
 //		set "prevWord" to be starter
 		String prevWord=starter;
 //		for each word "w" in the source text starting at the second word
@@ -106,6 +106,8 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	 */
 	@Override
 	public String generateText(int numWords) {
+		if(wordList.isEmpty() || numWords <= 0)
+			return "";
 //		set "currWord" to be the starter word
 		String currWord=starter;
 //		set "output" to be ""
@@ -172,6 +174,7 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	{
 		// feed the generator a fixed random value for repeatable behavior
 		MarkovTextGeneratorLoL gen = new MarkovTextGeneratorLoL(new Random(42));
+		System.out.println(gen.generateText(20));
 //		gen.train("hi there hi Leo");
 //		System.out.println(gen.generateText(4));
 		String textString = "Hello.  Hello there.  This is a test.  Hello there.  Hello Bob.  Test again.";
