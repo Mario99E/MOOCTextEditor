@@ -1,6 +1,7 @@
 package spelling;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     public AutoCompleteDictionaryTrie()
 	{
 		root = new TrieNode();
+		size=0;
 	}
 	
 	
@@ -40,7 +42,31 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		char Letters[]=word.toLowerCase().toCharArray();
+		TrieNode curNode=root;
+		for( int i=0;i<Letters.length;i++)
+		{
+			char myletter=Letters[i];
+			//add the letter to cur node if not exsit
+			TrieNode newNode=curNode.insert(myletter);
+			// if node in the trie
+			if(newNode==null)
+			{
+				//point to the child
+				newNode=curNode.getChild(myletter);
+			}
+			curNode=newNode;
+			
+		}
+		//if it already exists
+		if( curNode.endsWord() )
+			return false;
+		else
+		{
+			size++;
+			curNode.setEndsWord(true);
+			return true;
+		}
 	}
 	
 	/** 
@@ -50,7 +76,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+	    return size;
 	}
 	
 	
@@ -59,7 +85,26 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	@Override
 	public boolean isWord(String s) 
 	{
-	    // TODO: Implement this method
+		char Letters[]=s.toLowerCase().toCharArray();
+		if(Letters.length == 0 )
+		{
+			return false;
+		}
+		TrieNode curNode=root;
+		for( int i=0;i<Letters.length;i++)
+		{
+			char myletter=Letters[i];
+			//this letter not valid 
+			if(!curNode.getValidNextCharacters().contains(myletter))
+			{
+				return false;
+			}
+			curNode=curNode.getChild(myletter);
+		}
+		if(curNode.endsWord())
+		{
+			return true;
+		}
 		return false;
 	}
 
@@ -90,18 +135,51 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 // This method should implement the following algorithm:
     	 // 1. Find the stem in the trie.  If the stem does not appear in the trie, return an
     	 //    empty list
+    	 List<String> myCompletionsList =new  ArrayList<String>();
+    	 char Letters[]=prefix.toLowerCase().toCharArray();
+ 		if(Letters.length == 0 )
+ 		{
+ 			return myCompletionsList;
+ 		}
+ 		TrieNode curNode=root;
+ 		for( int i=0;i<Letters.length;i++)
+ 		{
+ 			char myletter=Letters[i];
+ 			//this letter not valid 
+ 			if(!curNode.getValidNextCharacters().contains(myletter))
+ 			{
+ 				return myCompletionsList;
+ 			}
+ 			curNode=curNode.getChild(myletter);
+ 		}
     	 // 2. Once the stem is found, perform a breadth first search to generate completions
     	 //    using the following algorithm:
     	 //    Create a queue (LinkedList) and add the node that completes the stem to the back
     	 //       of the list.
+ 		LinkedList<TrieNode> queue=new LinkedList<TrieNode>();
+ 		for (char c : curNode.getValidNextCharacters())
+ 		{
+ 			queue.addLast(curNode.getChild(c) ) ;
+ 		}
+ 		
     	 //    Create a list of completions to return (initially empty)
     	 //    While the queue is not empty and you don't have enough completions:
+ 			while( !queue.isEmpty() && myCompletionsList.size() < numCompletions)
+ 			{
     	 //       remove the first Node from the queue
+ 				curNode=queue.removeFirst() ;
     	 //       If it is a word, add it to the completions list
+ 				if(curNode.endsWord()) 
+ 					myCompletionsList.add(curNode.getText()) ;
     	 //       Add all of its child nodes to the back of the queue
+ 				for (char c : curNode.getValidNextCharacters())
+ 		 		{
+ 		 			queue.addLast(curNode.getChild(c));
+ 		 		}
+ 				
+ 			}
     	 // Return the list of completions
-    	 
-         return null;
+         return myCompletionsList;
      }
 
  	// For debugging
